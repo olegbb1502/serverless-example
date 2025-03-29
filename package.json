@@ -1,0 +1,32 @@
+{
+  "name": "serverless-example",
+  "version": "1.0.0",
+  "main": "discountImageLambda.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olegbb1502/serverless-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olegbb1502/serverless-example/issues"
+  },
+  "homepage": "https://github.com/olegbb1502/serverless-example#readme",
+  "description": "",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "canvas": "^2.11.2",
+    "pdfkit": "^0.16.0"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^10.8.2",
+    "serverless": "^4.9.1",
+    "serverless-dotenv-plugin": "^6.0.0",
+    "sinon": "^20.0.0"
+  }
+}

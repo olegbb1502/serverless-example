@@ -1,12 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const AWS = require('aws-sdk');
+const { S3 } = require('@aws-sdk/client-s3');
 const PDFDocument = require('pdfkit');
 const { getUserPurchases, calculateDiscount, generateDiscountCode } = require('./utils');
 
 if (process.env.NODE_ENV === 'development') {
-    AWS.S3.prototype.putObject = function (params) {
-        const outputPath = path.join(__dirname, 's3-mock', params.Key);
+    S3.prototype.putObject = function (params) {
+        const outputPath = path.join(__dirname, '../s3-mock', params.Key);
         const dir = path.dirname(outputPath);
     
         if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') {
         };
       };
 }
-const s3 = new AWS.S3();
+const s3 = new S3();
 
 module.exports.handler = async (event) => {
 const body = typeof event.body === 'string'

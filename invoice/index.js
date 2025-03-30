@@ -34,16 +34,27 @@ const body = typeof event.body === 'string'
   const fileName = `invoices/${userId}.pdf`;
   const buffers = [];
 
-  doc.on('data', buffers.push.bind(buffers));
-  doc.on('end', async () => {
-    const pdfData = Buffer.concat(buffers);
-    await s3.send(new PutObjectCommand({
-        Bucket: process.env.S3_BUCKET,
-        Key: fileName,
-        Body: pdfData,
-        ContentType: 'application/pdf',
-    }));
+  await new Promise((resolve, reject) => {
+    doc.on('data', buffers.push.bind(buffers));
+    doc.on('end', async () => {
+      try {
+        const pdfData = Buffer.concat(buffers);
+        await s3.send(new PutObjectCommand({
+          Bucket: process.env.S3_BUCKET,
+          Key: fileName,
+          Body: pdfData,
+          ContentType: 'application/pdf',
+        }));
+        console.log('✅ Uploaded to S3');
+        resolve();
+      } catch (err) {
+        console.error('❌ Failed to upload:', err);
+        reject(err);
+      }
+    });
+    doc.end();
   });
+  
 
   doc.fontSize(16).text(`Invoice for User ID: ${userId}`);
   doc.moveDown();

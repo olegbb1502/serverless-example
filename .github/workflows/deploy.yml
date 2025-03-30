@@ -23,7 +23,7 @@
  
        # Крок 3: Встановлюємо всі залежності з package.json
        - name: Install dependencies
-         run: npm install
+         run: npm install --legacy-peer-deps
  
        # Крок 4: Архівуємо весь проєкт у ZIP, крім node_modules, .git і .github
        - name: Zip Lambda package

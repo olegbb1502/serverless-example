@@ -1,0 +1,33 @@
+# Назва сервісу — ім'я проєкту, яке буде використано в іменах функцій, логів тощо
+service: aws-lambda-invoices
+
+# Версія Serverless Framework, яку використовуємо
+frameworkVersion: '4'
+
+# Конфігурація провайдера (у нашому випадку — AWS)
+provider:
+  name: aws                      # Cloud-провайдер
+  runtime: nodejs20.x            # Рантайм середовище (Node.js 18)
+  region: us-east-1              # AWS регіон розгортання
+  environment:                   # Змінні середовища, які будуть доступні в Lambda
+    S3_BUCKET: ${env:S3_BUCKET}  # Ім’я S3-бакету беремо з .env файлу
+
+# Опис Lambda-функцій
+functions:
+  generateInvoice:
+    handler: invoiceLambda.generateInvoiceHandler  # Вхідна точка функції (файл.функція)
+    events:
+      - http:                # Додаємо тригер — HTTP подія через API Gateway
+          path: invoice      # URL-путь: https://.../invoice
+          method: post       # HTTP-метод
+
+  generateDiscountImage:
+    handler: discountImageLambda.generateDiscountImageHandler
+    events:
+      - http:
+          path: discount
+          method: post
+
+# Плагіни, які використовуються в проєкті
+plugins:
+  - serverless-dotenv-plugin    # Плагін для підвантаження .env файлу в змінні середовища

@@ -15,5 +15,12 @@
     "url": "https://github.com/olegbb1502/serverless-example/issues"
   },
   "homepage": "https://github.com/olegbb1502/serverless-example#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "canvas": "^2.11.2",
+    "pdfkit": "^0.16.0",
+    "serverless": "^4.9.1",
+    "serverless-dotenv-plugin": "^6.0.0"
+  }
 }

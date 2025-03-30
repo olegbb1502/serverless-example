@@ -19,11 +19,11 @@
        - name: Setup Node.js
          uses: actions/setup-node@v3
          with:
-           node-version: 20
+           node-version: 18
  
        # Крок 3: Встановлюємо всі залежності з package.json
        - name: Install dependencies
-         run: npm install
+         run: npm install --legacy-peer-deps
  
        # Крок 4: Архівуємо весь проєкт у ZIP, крім node_modules, .git і .github
        - name: Zip Lambda package
@@ -39,8 +39,15 @@
            aws-region: ${{ secrets.AWS_REGION }}
  
        # Крок 6: Оновлюємо код Lambda-функції generateInvoice з архіву
-       - name: Deploy testFunction function
+       - name: Deploy generateInvoice function
          run: |
            aws lambda update-function-code \
-             --function-name arn:aws:lambda:eu-north-1:652728306101:function:testLambdaFunction \
+             --function-name arn:aws:lambda:eu-north-1:652728306101:function:generateInvoice \
+             --zip-file fileb://deployment.zip
+ 
+       # Крок 7: Оновлюємо код Lambda-функції generateDiscountImage з того ж архіву
+       - name: Deploy generateDiscountImage function
+         run: |
+           aws lambda update-function-code \
+             --function-name arn:aws:lambda:eu-north-1:652728306101:function:generateDiscountImage \
              --zip-file fileb://deployment.zip

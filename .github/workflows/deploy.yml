@@ -57,8 +57,8 @@ jobs:
             --zip-file fileb://invoice.zip
 
       # Крок 9: Деплой generateDiscountImage Lambda
-      - name: Deploy generateDiscountImage function
-        run: |
-          aws lambda update-function-code \
-            --function-name arn:aws:lambda:eu-north-1:652728306101:function:generateDiscountImage \
-            --zip-file fileb://discount.zip
+      # - name: Deploy generateDiscountImage function
+      #   run: |
+      #     aws lambda update-function-code \
+      #       --function-name arn:aws:lambda:eu-north-1:652728306101:function:generateDiscountImage \
+      #       --zip-file fileb://discount.zip

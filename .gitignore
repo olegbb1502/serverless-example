@@ -2,3 +2,5 @@ package-lock.json
 /node_modules
 .env
 s3-mock/
+**/node_modules/
+**/package-lock.json

@@ -21,7 +21,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 const s3 = new AWS.S3();
 
-module.exports.generateDiscountImageHandler = async (event) => {
+module.exports.handler = async (event) => {
 const body = typeof event.body === 'string'
     ? JSON.parse(event.body)
     : event;

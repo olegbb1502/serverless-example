@@ -33,13 +33,13 @@ jobs:
       - name: Zip invoiceLambda
         run: |
           cd invoice
-          zip -r ../invoice.zip . -x "node_modules/*" "*.test.js" "package-lock.json"
+          zip -r ../invoice.zip . -x "*.test.js"
 
       # Крок 6: Архівація discount функції
       - name: Zip discountImageLambda
         run: |
           cd discount
-          zip -r ../discount.zip . -x "node_modules/*" "*.test.js" "package-lock.json"
+          zip -r ../discount.zip . -x "*.test.js"
 
       # Крок 7: Налаштування AWS credentials
       - name: Configure AWS credentials

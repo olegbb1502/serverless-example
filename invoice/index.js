@@ -1,24 +1,22 @@
 const fs = require('fs');
 const path = require('path');
-const { S3 } = require('@aws-sdk/client-s3');
+const { S3, PutObjectCommand } = require('@aws-sdk/client-s3');
 const PDFDocument = require('pdfkit');
 const { getUserPurchases, calculateDiscount, generateDiscountCode } = require('./utils');
 
 if (process.env.NODE_ENV === 'development') {
-    S3.prototype.putObject = function (params) {
-        const outputPath = path.join(__dirname, '../s3-mock', params.Key);
-        const dir = path.dirname(outputPath);
-    
-        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    
-        return {
-          promise: async () => {
-            fs.writeFileSync(outputPath, params.Body);
-            console.log(`[MOCK] File written locally to: ${outputPath}`);
-          }
-        };
-      };
+    S3.prototype.send = async function (command) {
+      const params = command.input;
+      const outputPath = path.join(__dirname, '../s3-mock', params.Key);
+      const dir = path.dirname(outputPath);
+  
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  
+      fs.writeFileSync(outputPath, params.Body);
+      console.log(`[MOCK] File written locally to: ${outputPath}`);
+    };
 }
+  
 const s3 = new S3();
 
 module.exports.handler = async (event) => {
@@ -39,12 +37,12 @@ const body = typeof event.body === 'string'
   doc.on('data', buffers.push.bind(buffers));
   doc.on('end', async () => {
     const pdfData = Buffer.concat(buffers);
-    await s3.putObject({
-      Bucket: process.env.S3_BUCKET,
-      Key: fileName,
-      Body: pdfData,
-      ContentType: 'application/pdf',
-    }).promise();
+    await s3.send(new PutObjectCommand({
+        Bucket: process.env.S3_BUCKET,
+        Key: fileName,
+        Body: pdfData,
+        ContentType: 'application/pdf',
+    }));
   });
 
   doc.fontSize(16).text(`Invoice for User ID: ${userId}`);

@@ -42,5 +42,5 @@
        - name: Deploy testFunction function
          run: |
            aws lambda update-function-code \
-             --function-name testFunction \
+             --function-name arn:aws:lambda:eu-north-1:652728306101:function:testLambdaFunction \
              --zip-file fileb://deployment.zip

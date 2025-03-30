@@ -1,0 +1,20 @@
+{
+  "name": "serverless-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://olegbb1502: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@github.com/olegbb1502/serverless-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olegbb1502/serverless-example/issues"
+  },
+  "homepage": "https://github.com/olegbb1502/serverless-example#readme",
+  "description": ""
+}

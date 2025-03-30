@@ -1,0 +1,53 @@
+# Назва workflow-а, буде відображатися в GitHub UI
+ name: Deploy to AWS Lambda
+ 
+ # Запуск workflow при пуші в гілку main
+ on:
+   push:
+     branches: [main]
+ 
+ jobs:
+   deploy:
+     runs-on: ubuntu-latest  # Запускаємо на віртуальній машині Ubuntu
+ 
+     steps:
+       # Крок 1: Клонуємо репозиторій
+       - name: Checkout code
+         uses: actions/checkout@v3
+ 
+       # Крок 2: Встановлюємо Node.js версії 18
+       - name: Setup Node.js
+         uses: actions/setup-node@v3
+         with:
+           node-version: 18
+ 
+       # Крок 3: Встановлюємо всі залежності з package.json
+       - name: Install dependencies
+         run: npm install
+ 
+       # Крок 4: Архівуємо весь проєкт у ZIP, крім node_modules, .git і .github
+       - name: Zip Lambda package
+         run: |
+           zip -r deployment.zip . -x "node_modules/*" ".git/*" ".github/*"
+ 
+       # Крок 5: Конфігуруємо AWS CLI для доступу до AWS з GitHub Actions
+       - name: Configure AWS credentials
+         uses: aws-actions/configure-aws-credentials@v1
+         with:
+           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           aws-region: ${{ secrets.AWS_REGION }}
+ 
+       # Крок 6: Оновлюємо код Lambda-функції generateInvoice з архіву
+       - name: Deploy generateInvoice function
+         run: |
+           aws lambda update-function-code \
+             --function-name generateInvoice \
+             --zip-file fileb://deployment.zip
+ 
+       # Крок 7: Оновлюємо код Lambda-функції generateDiscountImage з того ж архіву
+       - name: Deploy generateDiscountImage function
+         run: |
+           aws lambda update-function-code \
+             --function-name generateDiscountImage \
+             --zip-file fileb://deployment.zip

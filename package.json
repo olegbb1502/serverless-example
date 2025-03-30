@@ -6,8 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://olegbb1502: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@github.com/olegbb1502/serverless-example.git"
+    "type": "git"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { S3, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const PDFDocument = require('pdfkit');
 const { getUserPurchases, calculateDiscount, generateDiscountCode } = require('./utils');
 
@@ -66,10 +67,16 @@ const body = typeof event.body === 'string'
   doc.text(`Discount Code: ${discountCode}`);
   doc.end();
 
-  const bucket = process.env.S3_BUCKET;
-  const region = process.env.AWS_REGION || 'us-east-1';
+  const signedUrl = await getSignedUrl(
+      s3,
+      new GetObjectCommand({
+        Bucket: process.env.S3_BUCKET,
+        Key: fileName,
+      }),
+      { expiresIn: 600 } // 10 хвилин
+  );
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Invoice generated', url: `https://${bucket}.s3.${region}.amazonaws.com/${fileName}` }),
+    body: JSON.stringify({ message: 'Invoice generated', url: signedUrl }),
   };
 };

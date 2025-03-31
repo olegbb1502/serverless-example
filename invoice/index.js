@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { S3, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { S3, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const PDFDocument = require('pdfkit');
 const { getUserPurchases, calculateDiscount, generateDiscountCode } = require('./utils');

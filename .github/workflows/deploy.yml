@@ -26,7 +26,7 @@ jobs:
 
       # Крок 4: Встановлення залежностей для discount
       - name: Install discount dependencies
-        working-directory: discount
+        working-directory: generatePurchases
         run: npm install --legacy-peer-deps
 
       # Крок 5: Архівація invoice функції
@@ -38,8 +38,8 @@ jobs:
       # Крок 6: Архівація discount функції
       - name: Zip discountImageLambda
         run: |
-          cd discount
-          zip -r ../discount.zip . -x "*.test.js" "package-lock.json"
+          cd generatePurchases
+          zip -r ../generatePurchases.zip . -x "*.test.js" "package-lock.json"
 
       # Крок 7: Налаштування AWS credentials
       - name: Configure AWS credentials
@@ -57,8 +57,8 @@ jobs:
             --zip-file fileb://invoice.zip
 
       # Крок 9: Деплой generateDiscountImage Lambda
-      # - name: Deploy generateDiscountImage function
-      #   run: |
-      #     aws lambda update-function-code \
-      #       --function-name arn:aws:lambda:eu-north-1:652728306101:function:generateDiscountImage \
-      #       --zip-file fileb://discount.zip
+      - name: Deploy generatePurchases function
+        run: |
+          aws lambda update-function-code \
+            --function-name arn:aws:lambda:eu-north-1:652728306101:function:generatePurchase \
+            --zip-file fileb://generatePurchases.zip

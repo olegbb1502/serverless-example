@@ -12,6 +12,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.777.0",
     "@aws-sdk/s3-request-presigner": "^3.777.0",
+    "csv-parser": "^3.2.0",
     "install": "^0.13.0",
     "npm": "^9.9.4",
     "pdfkit": "^0.16.0"

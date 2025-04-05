@@ -8,7 +8,7 @@ frameworkVersion: '4'
 provider:
   name: aws                      # Cloud-провайдер
   runtime: nodejs20.x            # Рантайм середовище (Node.js 18)
-  region: us-east-1              # AWS регіон розгортання
+  region: us-west-1           # AWS регіон розгортання
   environment:                   # Змінні середовища, які будуть доступні в Lambda
     S3_BUCKET: ${env:S3_BUCKET}  # Ім’я S3-бакету беремо з .env файлу
 
@@ -21,12 +21,8 @@ functions:
           path: invoice      # URL-путь: https://.../invoice
           method: post       # HTTP-метод
 
-  generateDiscountImage:
-    handler: discount/index.handler
-    events:
-      - http:
-          path: discount
-          method: post
+  generatePurchases:
+    handler: generatePurchases/index.handler
 
 # Плагіни, які використовуються в проєкті
 plugins:
